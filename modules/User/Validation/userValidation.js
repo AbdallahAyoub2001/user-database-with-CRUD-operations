@@ -15,25 +15,13 @@ let dep = body('department').notEmpty().withMessage('Age cannot be empty')
     .withMessage("this department is invalid");
 
 // check that the given id belongs to a user
-let id = param('id').custom(async (value) => {
-        const user = (await db('users').where('id', value).first());
-
+let id = param('user_id').custom(async (value) => {
+        const user = await db('users').where('id', value).first();
         if (!user) {
             throw new Error();
         }
     return true;
     }).withMessage('User does not exist!!');
-
-// This one is used in the get method to check if the data given to get a user is valid, I used separate attribute because the name of the parameter is 'value' not 'id'
-let getID = param('value').custom(async (value) => {
-    // const user = (await userModel.getUser('id', value));
-    const user = await db('users').where('id', value).first();
-    console.log(user);
-    if (!user) {
-        throw new Error();
-    }
-    return true;
-}).withMessage('User does not exist!!');
 
 const postValidation = [
         name,
@@ -49,7 +37,7 @@ const putValidation = [
     ]
 
 const getValidation = [
-    getID
+    id
     ]
 
 const deleteValidation = [

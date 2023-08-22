@@ -3,12 +3,7 @@ const knex = require("knex");
 
 class userModel {
     async addUser(userInfo) {
-        // const trimmedName = toString(name).trim();
-        // const newUser = {
-        //     name: trimmedName,
-        //     age: age,
-        //     department: department
-        // };
+
         let [id] = await db('users').insert({
             name: userInfo.name, age: userInfo.age, department: userInfo.department
         });
