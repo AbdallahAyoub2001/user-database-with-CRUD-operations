@@ -21,7 +21,7 @@ class userController {
                 key = req.query.key;
                 const value = req.query.value;
                 const user = await userService.getUser(key, value);
-                return res.status(201).json(user);
+                return res.status(200).json(user);
 
             }
             const users = await userService.getUsers();
@@ -37,7 +37,7 @@ class userController {
         try {
             const user_id = req.params.user_id;
             const user = await userService.getUser('id', user_id);
-            return res.status(201).json(user);
+            return res.status(200).json(user);
         } catch (err) {
             console.error(err);
             return res.status(500).json("Something went wrong!");
@@ -47,7 +47,7 @@ class userController {
         try {
             const id = req.params.user_id;
             const q = await userService.updateUser(id, req.body);
-            return res.status(201).json(id);
+            return res.status(200).json(id);
         } catch (err) {
             console.error(err);
             return res.status(500).json("Something went wrong!");
@@ -58,7 +58,7 @@ class userController {
         try {
             const id = req.params.user_id;
             const q = await userService.deleteUser(id);
-            return res.status(201).json(id);
+            return res.status(200).json(id);
         } catch (err) {
             console.error(err);
             return res.status(500).json("Something went wrong!");
