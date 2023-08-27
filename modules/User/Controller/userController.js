@@ -1,5 +1,7 @@
 const userService = require('../Services/userServices');
 const userDAO = require("../model/userModel");
+const authService = require('../../middlewares/auth');
+const jwt = require('jsonwebtoken');
 const url = require("url");
 
 class userController {
@@ -64,6 +66,28 @@ class userController {
             return res.status(500).json("Something went wrong!");
         }
     }
+
+    async signup(req, res){
+        try {
+            const userId = await userService.addUser(req.body);
+            res.status(201).json({ userId });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'An error occurred while signing up' });
+        }
+    };
+
+    async login(req, res) {
+        try {
+
+            const result = await userService.authenticateUser(req.body);
+            res.status(result.status).json({ message: result.message, token: result.token });
+        } catch (error) {
+            console.error('Error signing in:', error);
+            res.status(500).json({ error: 'An error occurred while signing in' });
+        }
+    };
+
 }
 
 module.exports = new userController();
