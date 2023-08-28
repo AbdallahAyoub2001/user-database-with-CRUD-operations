@@ -1,11 +1,10 @@
 const db = require('../../../db/db');
-const knex = require("knex");
 const bcrypt = require('bcrypt');
 const authService = require("../../middlewares/auth");
 
 class userModel {
     async addUser(userInfo) {
-        const hashedPassword = await authService.hashPassword(userInfo.password);
+        const hashedPassword = await this.hashPassword(userInfo.password);
 
         let [id] = await db('users').insert({
             email: userInfo.email, name: userInfo.name, password: hashedPassword, age: userInfo.age, department: userInfo.department
@@ -61,6 +60,11 @@ class userModel {
         const user = this;
         return await bcrypt.compare(password, user.password);
     }
+
+    async hashPassword(password) {
+        const saltRounds = 10;
+        return bcrypt.hash(password, saltRounds);
+    };
 }
 
 module.exports = new userModel();
