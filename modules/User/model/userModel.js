@@ -32,7 +32,7 @@ class userModel {
         return pass;
     }
     async updateUser(id, userInfo) {
-        const hashedPassword = await authService.hashPassword(userInfo.password);
+        const hashedPassword = await this.hashPassword(userInfo.password);
         return db('users')
             .where({ id: id })
             .update({
@@ -48,12 +48,6 @@ class userModel {
         return db('users')
             .where({ id: id })
             .del();
-    }
-
-    async hashPassword() {
-        const user = this;
-        this.password = await bcrypt.hash(this.password, 10);
-        next();
     }
 
     async isValidPassword(password) {
